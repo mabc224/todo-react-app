@@ -1,15 +1,19 @@
 import React from 'react';
 
-const ApiItem = (props) => {
-    let button = null;
-    if (props.completed) {
-        button = <button type="button" className="list-group-item list-group-item-action"><del>{props.content}</del></button>;
-    } else {
-        button = <button type="button" className="list-group-item list-group-item-action">{props.content}</button>;
-    }
+const ApiItem = ({completed, content, onClick}) => {
+
     return (
         <div>
-        {button}
+            {(completed)
+                ? (
+                    <button onClick={onClick} type="button" className="list-group-item list-group-item-action">
+                        <del>{content}</del>
+                    </button>
+                )
+                : (
+                    <button onClick={onClick} type="button" className="list-group-item list-group-item-action">{content}</button>
+                )
+}
         </div>
     )
 }

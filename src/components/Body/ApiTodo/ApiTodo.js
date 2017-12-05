@@ -1,22 +1,54 @@
-import React from 'react';
+import React, {Component} from 'react';
+import { connect } from 'react-redux';
 import Item from './ApiItem/ApiItem';
+import { apiCall, toggleApiTodo } from '../../../actions/apiTodo';
 
-const ApiTodo = (props) => {
-    return (
-        <div>
-            <br />
-            <h3>API Todo</h3>
+class ApiTodo extends Component {
 
-            <div className="list-group "> 
-            {
-                props.items.map((item) => {
-                    return <Item key={item.uuid} uuid={item.uuid} content={item.title} completed={item.completed} />
-                })
-                
-            }
+    componentDidMount() {
+        this.props.apiCall();
+      }
+
+    render() {
+        return (
+            <div>
+                <br/>
+                <h3>API Todo</h3>
+
+                <div className="list-group ">
+                    {this
+                        .props
+                        .items
+                        .map((item) => {
+                            return <Item
+                                key={item.id}
+                                uuid={item.id}
+                                content={item.title}
+                                onClick={() => this.props.toggleApiTodo(item.id)}
+                                completed={item.completed}/>
+                        })
+                    }
+                </div>
             </div>
-        </div>
-    )
+        )
+    }
 }
 
-export default ApiTodo;
+
+const mapStateToProps = (state) => {
+    return {
+        items: state.apiTodo.items
+    };
+}
+
+const mapDispatchToProps = dispatch => {
+    return {
+        apiCall: () => apiCall(dispatch),
+        toggleApiTodo: (id) => dispatch(toggleApiTodo(id))
+    }
+};
+
+export default connect(
+    mapStateToProps,
+    mapDispatchToProps
+)(ApiTodo);
