@@ -5,13 +5,15 @@ import App from './App';
 import registerServiceWorker from './registerServiceWorker';
 import reducers from './reducers/index';
 
-import { createStore } from 'redux';
+import { createStore, applyMiddleware, compose } from 'redux';
 import { Provider } from 'react-redux';
+import logger from 'redux-logger';
+import thunk from 'redux-thunk';
 
 /* eslint-disable no-underscore-dangle */
+const composeEnhancers = window.__REDUX_DEVTOOLS_EXTENSION_COMPOSE__ || compose;
 const store = createStore(
-    reducers, /* preloadedState, */
- window.__REDUX_DEVTOOLS_EXTENSION__ && window.__REDUX_DEVTOOLS_EXTENSION__()
+    reducers, composeEnhancers(applyMiddleware(logger, thunk))
 );
 /* eslint-enable */
 
